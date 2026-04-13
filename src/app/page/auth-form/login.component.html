@@ -1,0 +1,104 @@
+<!-- FormLogin -->
+
+
+<!-- Form SigUp -->
+
+
+<div class="login-container">
+    <!-- TABS -->
+    <div class="tab-toggles">
+        <button class="tab-btn" [class.active]="isLogin" (click)="isLogin = true">Login</button>
+        <button class="tab-btn" [class.active]="!isLogin" (click)="isLogin = false">Register</button>
+    </div>
+
+    <!-- FORM WRAPPER -->
+    <div class="forms-wrapper">
+        <!-- LOGIN FORM -->
+        <form [formGroup]="login" class="login-form" *ngIf="isLogin">
+            <mat-card>
+                <mat-card-title>
+                    <h2>Login</h2>
+                </mat-card-title>
+
+                <mat-form-field appearance="fill" class="full-width">
+                    <mat-label>Email</mat-label>
+                    <input matInput formControlName="email" />
+                </mat-form-field>
+
+                <mat-form-field appearance="fill" class="full-width password-field">
+                    <mat-label>Password</mat-label>
+                    <input matInput [type]="showPassword ? 'text' : 'password'" formControlName="password" />
+                    <button mat-icon-button matSuffix type="button" (click)="showPassword = !showPassword">
+                        <mat-icon>{{showPassword? 'visibility_off' : 'visibility'}}</mat-icon>
+                    </button>
+                </mat-form-field>
+
+                <button mat-raised-button color="primary" class="login-btn" (click)="submitLogin()">
+                    Login
+                </button>
+                <mat-card-footer>
+                    <p class="switch-form">Bạn chưa có tài khoản? <a (click)="isLogin = false">Đăng kí ngay</a></p>
+                </mat-card-footer>
+            </mat-card>
+        </form>
+        <form [formGroup]="register" class="login-form" *ngIf="!isLogin">
+            <mat-card>
+                <mat-card-title>
+                    <h2>Register</h2>
+                </mat-card-title>
+
+
+
+                <div class="name-row">
+                    <mat-form-field appearance="fill">
+                        <mat-label>First name</mat-label>
+                        <input matInput formControlName="fistName" />
+                    </mat-form-field>
+                    <mat-form-field appearance="fill">
+                        <mat-label>Last name</mat-label>
+                        <input matInput formControlName="lastName" />
+                    </mat-form-field>
+                </div>
+
+                <mat-form-field appearance="fill" class="full-width">
+                    <mat-label>Email</mat-label>
+                    <input matInput formControlName="email" />
+                </mat-form-field>
+
+                <div class="password-row">
+                    <mat-form-field appearance="fill" class="password-field">
+                        <mat-label>Password</mat-label>
+                        <input matInput [type]="showPassword ? 'text' : 'password'" formControlName="password" />
+                        <button mat-icon-button matSuffix type="button" (click)="showPassword = !showPassword">
+                            <mat-icon>{{showPassword? 'visibility_off' : 'visibility'}}</mat-icon>
+                        </button>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="fill" class="password-field">
+                        <mat-label>Retype Password</mat-label>
+                        <input matInput [type]="showRetypePassword ? 'text' : 'password'"
+                            formControlName="retypePassword" />
+                        <button mat-icon-button matSuffix type="button"
+                            (click)="showRetypePassword = !showRetypePassword">
+                            <mat-icon>{{showRetypePassword? 'visibility_off' : 'visibility'}}</mat-icon>
+                        </button>
+                    </mat-form-field>
+                </div>
+
+                <p class="error-message" *ngIf="register.get('retypePassword')?.errors?.['error']">
+                    ❌ Mật khẩu không trùng khớp
+                </p>
+
+                <button mat-raised-button color="primary" class="login-btn" (click)="submitRegister()">
+                    Register
+                </button>
+                <mat-card-footer>
+                    <p class="switch-form">Đã có tài khoản? <a (click)="isLogin = true">Đăng nhập</a></p>
+                </mat-card-footer>
+            </mat-card>
+        </form>
+
+        <!-- RIGHT: IMAGE -->
+        <div class="login-image"></div>
+    </div>
+</div>

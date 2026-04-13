@@ -1,0 +1,225 @@
+.login-container {
+    display: flex;
+    flex-direction: column;
+    min-width: 900px;
+    min-height: 500px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.25);
+    border-radius: 16px;
+    overflow: hidden;
+    background: white;
+}
+
+/* TAB TOGGLES */
+.tab-toggles {
+    display: flex;
+    background: linear-gradient(135deg, #f5f5f5, #e8e8e8);
+    border-bottom: 2px solid #e0e0e0;
+    padding: 0;
+}
+
+.tab-btn {
+    flex: 1;
+    padding: 16px;
+    border: none;
+    background: transparent;
+    font-size: 16px;
+    font-weight: 500;
+    color: #666;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.tab-btn:hover {
+    background: rgba(63, 81, 181, 0.08);
+    color: #3f51b5;
+}
+
+.tab-btn.active {
+    color: #3f51b5;
+    font-weight: 600;
+}
+
+.tab-btn.active::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #3f51b5, #5c6bc0);
+    border-radius: 2px;
+}
+
+/* FORM CONTAINER */
+.login-container>form {
+    display: flex !important;
+    flex: 1;
+}
+
+.forms-wrapper {
+    display: flex;
+    flex: 1;
+}
+
+/* LEFT */
+.login-form {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(135deg, #fafafa, #f5f5f5);
+    padding: 20px;
+}
+
+mat-card {
+    min-width: 350px;
+    max-width: 400px;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+mat-card-title h2 {
+    margin: 0 0 24px 0;
+    font-size: 24px;
+    font-weight: 600;
+    color: #333;
+}
+
+mat-card-footer {
+    margin-top: 20px;
+    padding-top: 16px;
+    border-top: 1px solid #e0e0e0;
+}
+
+.login-image {
+    flex: 1;
+    overflow: hidden;
+    background-image: url('https://4kwallpapers.com/images/walls/thumbs_3t/25523.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+}
+
+.full-width {
+    width: 100% !important;
+    margin-bottom: 16px;
+}
+
+.password-field {
+    width: 100% !important;
+}
+
+.name-row {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 8px;
+}
+
+.name-row mat-form-field {
+    flex: 1;
+}
+
+.password-row {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 8px;
+}
+
+.password-row mat-form-field {
+    flex: 1;
+    margin-bottom: 0;
+}
+
+.login-btn {
+    width: 100%;
+    height: 42px;
+    font-size: 16px;
+    font-weight: 500;
+    margin-top: 16px;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+}
+
+.login-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(63, 81, 181, 0.4);
+}
+
+.error-message {
+    color: #d32f2f;
+    font-size: 13px;
+    margin: -8px 0 12px 0;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.switch-form {
+    margin: 0;
+    font-size: 13px;
+    color: #666;
+    text-align: center;
+}
+
+.switch-form a {
+    color: #3f51b5;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.switch-form a:hover {
+    color: #5c6bc0;
+    text-decoration: underline;
+}
+
+/* BUTTON SUFFIX ICON */
+::ng-deep .mat-mdc-form-field-suffix {
+    padding: 0 8px;
+}
+
+button[matSuffix] {
+    cursor: pointer;
+    opacity: 0.7;
+    transition: opacity 0.3s;
+}
+
+button[matSuffix]:hover {
+    opacity: 1;
+}
+
+@media (max-width: 768px) {
+    .login-container {
+        min-width: 90vw;
+        min-height: auto;
+        flex-direction: column;
+    }
+
+    mat-card {
+        min-width: 100%;
+        max-width: 100%;
+    }
+
+    .login-image {
+        display: none;
+    }
+
+    .name-row,
+    .password-row {
+        flex-direction: column;
+        gap: 0;
+    }
+
+    .name-row mat-form-field,
+    .password-row mat-form-field {
+        width: 100% !important;
+        margin-bottom: 16px;
+    }
+}

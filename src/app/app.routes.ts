@@ -1,3 +1,22 @@
-import { Routes } from '@angular/router';
+import { Route } from '@angular/router';
 
-export const routes: Routes = [];
+interface RouterAlias extends Route {
+  alias?: string;
+  children?: RouterAlias[];
+}
+const routes: RouterAlias[] = [
+  {
+    path: 'home',
+    children: [
+      {
+        path: 'login',
+        async loadComponent() {
+          return (await import('@page/auth-form/login.component')).AuthFormComponent;
+        },
+        'alias':'loginPage'
+      }
+    ]
+  }
+];
+export { RouterAlias, routes };
+

@@ -1,12 +1,8 @@
-declare global {
-  interface JQuery {
-    magnificPopup({type: string, gallery: {enabled: bool}});
-
-    niceSelect(): JQLite;
-
-    sticky(): JQLite;
-
-    owlCarousel(param?:any):JQuery
-  }
+type Login = {
+  username: string
+  password: string
 }
-declare const $:JQueryStatic
+type SignIn = Login & {
+  fistName: string
+  lastName: string
+}
