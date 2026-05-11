@@ -1,39 +1,36 @@
-<!-- FormLogin -->
-
-
-<!-- Form SigUp -->
-
-
 <div class="login-container">
-    <!-- TABS -->
-    <div class="tab-toggles">
-        <button class="tab-btn" [class.active]="isLogin" (click)="isLogin = true">Login</button>
-        <button class="tab-btn" [class.active]="!isLogin" (click)="isLogin = false">Register</button>
-    </div>
-
-    <!-- FORM WRAPPER -->
     <div class="forms-wrapper">
         <!-- LOGIN FORM -->
-        <form [formGroup]="login" class="login-form" *ngIf="isLogin">
+        <form [formGroup]="login" class="login-form" *ngIf="isLogin" (ngSubmit)="submitLogin($event)">
             <mat-card>
                 <mat-card-title>
                     <h2>Login</h2>
                 </mat-card-title>
 
-                <mat-form-field appearance="fill" class="full-width">
+                <mat-form-field class="full-width">
                     <mat-label>Email</mat-label>
                     <input matInput formControlName="email" />
+                    <p matError *ngIf="getErrorValidator(login.get('email'), 'email')">
+                        {{messageError.email.error}}
+                    </p>
+                    <mat-error
+                        *ngIf="getErrorValidator(login.get('email'),'required')">{{messageError.email.notNull}}</mat-error>
                 </mat-form-field>
 
-                <mat-form-field appearance="fill" class="full-width password-field">
+                <mat-form-field class="full-width password-field">
                     <mat-label>Password</mat-label>
-                    <input matInput [type]="showPassword ? 'text' : 'password'" formControlName="password" />
-                    <button mat-icon-button matSuffix type="button" (click)="showPassword = !showPassword">
-                        <mat-icon>{{showPassword? 'visibility_off' : 'visibility'}}</mat-icon>
+                    <input matInput [type]="showPassword().password? 'text' : 'password'" formControlName="password"
+                        autocomplete="off" />
+                    <button mat-icon-button matSuffix type="button" (click)="changeShowPassword('password')">
+                        <mat-icon>{{showPassword().password? 'visibility_off' : 'visibility'}}</mat-icon>
                     </button>
+                    <mat-error
+                        *ngIf="getErrorValidator(login.get('password'), 'minlength')||login.get('password')?.getError('maxlength')">{{messageError.password.error}}</mat-error>
+                    <mat-error
+                        *ngIf="getErrorValidator(login.get('password'),'required')">{{messageError.password.notNull}}</mat-error>
                 </mat-form-field>
 
-                <button mat-raised-button color="primary" class="login-btn" (click)="submitLogin()">
+                <button mat-raised-button color="primary" class="login-btn" [disabled]="login.invalid" type="submit">
                     Login
                 </button>
                 <mat-card-footer>
@@ -46,56 +43,69 @@
                 <mat-card-title>
                     <h2>Register</h2>
                 </mat-card-title>
-
-
-
                 <div class="name-row">
-                    <mat-form-field appearance="fill">
+                    <mat-form-field cl>
                         <mat-label>First name</mat-label>
-                        <input matInput formControlName="fistName" />
+                        <input matInput formControlName="firstName" />
+                        <mat-error
+                            *ngIf="getErrorValidator(register.get('firstName'),'required')">{{messageError.firstName.notNull}}</mat-error>
+                        <mat-error
+                            *ngIf="getErrorValidator(register.get('firstName'),'maxlength')|| getErrorValidator(register.get('firstName'),'minlength')">{{messageError.firstName.error}}</mat-error>
                     </mat-form-field>
-                    <mat-form-field appearance="fill">
+                    <mat-form-field>
                         <mat-label>Last name</mat-label>
                         <input matInput formControlName="lastName" />
+                        <mat-error
+                            *ngIf="getErrorValidator(register.get('lastName'),'required')">{{messageError.lastName.notNull}}</mat-error>
+                        <mat-error
+                            *ngIf="getErrorValidator(register.get('lastName'),'maxlength')|| getErrorValidator(register.get('lastName'),'minlength')">{{messageError.lastName.error}}</mat-error>
                     </mat-form-field>
                 </div>
 
-                <mat-form-field appearance="fill" class="full-width">
+                <mat-form-field class="full-width">
                     <mat-label>Email</mat-label>
                     <input matInput formControlName="email" />
+                    <mat-error
+                        *ngIf="getErrorValidator(register.get('email'), 'email')">{{messageError.email.error}}</mat-error>
+                    <mat-error
+                        *ngIf="getErrorValidator(register.get('email'),'required')">{{messageError.email.notNull}}</mat-error>
                 </mat-form-field>
 
-                <div class="password-row">
-                    <mat-form-field appearance="fill" class="password-field">
+                <div class="password-row" formGroupName="retypePasswordGr">
+                    <mat-form-field class="password-field">
                         <mat-label>Password</mat-label>
-                        <input matInput [type]="showPassword ? 'text' : 'password'" formControlName="password" />
-                        <button mat-icon-button matSuffix type="button" (click)="showPassword = !showPassword">
-                            <mat-icon>{{showPassword? 'visibility_off' : 'visibility'}}</mat-icon>
+                        <input matInput [type]="showPassword().password? 'text' : 'password'" formControlName="password"
+                            autocomplete="off" />
+                        <button mat-icon-button matSuffix type="button" (click)="changeShowPassword('password')">
+                            <mat-icon>{{showPassword().password? 'visibility_off' : 'visibility'}}</mat-icon>
                         </button>
+                        <mat-error
+                            *ngIf="getErrorValidator(register.get('retypePasswordGr')?.get('password') , 'minlength')||register.get('retypePasswordGr')?.get('password')?.getError('maxLength')">{{messageError.password.error}}</mat-error>
+                        <mat-error
+                            *ngIf="getErrorValidator(register.get('retypePasswordGr')?.get('password'),'required')">{{messageError.password.notNull}}</mat-error>
                     </mat-form-field>
 
-                    <mat-form-field appearance="fill" class="password-field">
+                    <mat-form-field class="password-field">
                         <mat-label>Retype Password</mat-label>
-                        <input matInput [type]="showRetypePassword ? 'text' : 'password'"
+                        <input matInput [type]="showPassword().retype? 'text' : 'password'"
                             formControlName="retypePassword" />
-                        <button mat-icon-button matSuffix type="button"
-                            (click)="showRetypePassword = !showRetypePassword">
-                            <mat-icon>{{showRetypePassword? 'visibility_off' : 'visibility'}}</mat-icon>
+                        <button mat-icon-button matSuffix type="button" (click)="changeShowPassword('retype')">
+                            <mat-icon>{{showPassword().retype? 'visibility_off' : 'visibility'}}</mat-icon>
                         </button>
+                        <mat-error
+                            *ngIf="register.get('retypePasswordGr')?.get('retypePassword')?.dirty&&register.get('retypePasswordGr')?.get('retypePassword')?.getError('mismatch')">{{register.get('retypePasswordGr')?.getError('mismatch')}}</mat-error>
                     </mat-form-field>
                 </div>
-
-                <p class="error-message" *ngIf="register.get('retypePassword')?.errors?.['error']">
-                    ❌ Mật khẩu không trùng khớp
-                </p>
-
-                <button mat-raised-button color="primary" class="login-btn" (click)="submitRegister()">
+                <button [disabled]="this.register.invalid || this.register.get('retypePasswordGr')?.invalid"
+                    mat-raised-button color="primary" class="login-btn" (click)="submitRegister($event)">
                     Register
                 </button>
+                {{this.register.get('retypePasswordGr')?.invalid}}
                 <mat-card-footer>
                     <p class="switch-form">Đã có tài khoản? <a (click)="isLogin = true">Đăng nhập</a></p>
                 </mat-card-footer>
             </mat-card>
+
         </form>
 
         <!-- RIGHT: IMAGE -->

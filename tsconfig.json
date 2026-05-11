@@ -28,6 +28,9 @@
     "paths": {
       "@page/*": [
         "app/page/*"
+      ],
+      "@service/*": [
+        "app/services/*"
       ]
     }
   },

@@ -10,6 +10,6 @@ export class BearerInterceptor implements HttpInterceptor {
   }
 
   getTokenIfError(){
-    this.http
+    this.http.get(import.meta.url)
   }
 }

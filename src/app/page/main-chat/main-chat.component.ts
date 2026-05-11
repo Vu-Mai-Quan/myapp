@@ -1,0 +1,30 @@
+import { Component, inject } from '@angular/core';
+import { Router } from '@angular/router';
+import { AuthService } from '@service/auth/auth.service';
+import { ToastrService } from 'ngx-toastr';
+import { finalize } from 'rxjs';
+
+@Component({
+  selector: 'app-main-chat',
+  standalone: true,
+  imports: [],
+  templateUrl: './main-chat.component.html',
+  styleUrl: './main-chat.component.css'
+})
+export class MainChatComponent {
+private readonly AUTH= inject(AuthService)
+
+private readonly ROUTER = inject(Router)
+
+signOut(){
+  this.AUTH.logout().subscribe({
+    next:()=>{
+      this.ROUTER.navigate(['home','login'])
+    },error:(e)=>{
+      console.log(e.error);
+      this.ROUTER.navigate(['home', 'login'])
+    }
+  });
+}
+
+}

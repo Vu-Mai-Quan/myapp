@@ -1,4 +1,5 @@
 import { Route } from '@angular/router';
+import { userGuard } from 'app/guard/auth/user-guard';
 
 interface RouterAlias extends Route {
   alias?: string;
@@ -13,7 +14,13 @@ const routes: RouterAlias[] = [
         async loadComponent() {
           return (await import('@page/auth-form/login.component')).AuthFormComponent;
         },
-        'alias':'loginPage'
+        'alias':'login'
+      },
+      {
+        path:'main-chat',
+        loadComponent: async () => (await import('@page/main-chat/main-chat.component')).MainChatComponent,
+        alias:'main-chat',
+        canActivate:[userGuard]
       }
     ]
   }

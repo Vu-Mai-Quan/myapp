@@ -1,8 +1,8 @@
 .login-container {
     display: flex;
     flex-direction: column;
-    min-width: 900px;
-    min-height: 500px;
+    min-width: 1200px;
+    min-height: 600px;
     position: absolute;
     top: 50%;
     left: 50%;
@@ -78,7 +78,7 @@
 
 mat-card {
     min-width: 350px;
-    max-width: 400px;
+    max-width: 500px;
     padding: 30px;
     border-radius: 12px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
@@ -100,7 +100,7 @@ mat-card-footer {
 .login-image {
     flex: 1;
     overflow: hidden;
-    background-image: url('https://4kwallpapers.com/images/walls/thumbs_3t/25523.jpg');
+    background-image: url('https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExZnMwOHZ6MnVlYXJ1Ync2cGR0OG0yYm80cXdwMHJjZnhmcXNlYXkzbyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/tFeEzVsBYzGTLaAaRB/giphy.gif');
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
@@ -149,15 +149,6 @@ mat-card-footer {
 .login-btn:hover {
     transform: translateY(-2px);
     box-shadow: 0 6px 20px rgba(63, 81, 181, 0.4);
-}
-
-.error-message {
-    color: #d32f2f;
-    font-size: 13px;
-    margin: -8px 0 12px 0;
-    display: flex;
-    align-items: center;
-    gap: 6px;
 }
 
 .switch-form {
