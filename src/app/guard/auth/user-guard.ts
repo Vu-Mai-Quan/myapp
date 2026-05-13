@@ -8,24 +8,17 @@ export const userGuard: CanActivateFn = (route, state) => {
   const auth = inject(AuthService), toast = inject(ToastrService), router = inject(Router), BR = inject<Object>(PLATFORM_ID), user = auth.userState();
 
   let info: string | null = null;
+  let token: string | null = null;
   if (BR === 'browser') {
     info = localStorage?.getItem(auth.LOCAL_USER_INFO);
-
+    token = sessionStorage?.getItem(auth.SESSION_ACCESS_TOKEN);
   }
 
-  if ((user.userInfo || info?.trim() !== '') && user.token) {
+  if ((user.userInfo || info?.trim() !== '') && (user.token || token)) {
     return true;
   }
 
-
   return auth.refreshTokensWhenTheyExpire().pipe(
-    retry({ count: 2, delay: 300 }),
-    tap(({ token }) => auth.userState.update(val => ({ ...val, token }))),
-    map(() => true),
-    catchError((e) => {
-      if (BR === 'browser') toast.error('Phiên đăng nhập đã hết hạn vui lòng đăng nhập lại', '')
-      return of(router.createUrlTree(['home', 'login']))
-    }),
-
+    map((success) => success || router.createUrlTree(["home", "login"]))
   );
 };

@@ -10,11 +10,13 @@
   "material-icon-theme.files.color": "#90a4ae",
   "js/ts.preferences.importModuleSpecifier": "non-relative",
   "workbench.colorTheme": "Dark+",
-  "editor.fontSize": 12,
+  "editor.fontSize": 14,
   "[javascript]": {
     "js/ts.preferences.importModuleSpecifier": "relative"
   },
   "terminal.integrated.fontSize": 12,
-  "prettier.prettierPath": "C:\\Users\\ADMIN\\.vscode\\extensions\\esbenp.prettier-vscode-12.3.0\\node_modules\\prettier",
   "prettier.useEditorConfig": true,
+  "background.editorBackgrounds": [
+    "https://cdnv2.tgdd.vn/mwg-static/common/News/1586975/hinh-nen-may-tinh-4k-dep%20%2839%29.jpg"
+  ]
 }

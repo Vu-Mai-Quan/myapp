@@ -1,27 +1,46 @@
-import { HttpEvent, HttpHandlerFn, HttpRequest, provideHttpClient, withFetch, withInterceptors } from '@angular/common/http';
+import { HttpEvent, HttpHandlerFn, HttpRequest, provideHttpClient, withFetch, withInterceptors, withInterceptorsFromDi } from '@angular/common/http';
 import { ApplicationConfig, inject } from '@angular/core';
 import { provideClientHydration } from '@angular/platform-browser';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { provideRouter } from '@angular/router';
 import { AuthService } from 'app/services/auth/auth.service';
-import { Observable } from 'rxjs';
+import { Observable, catchError, switchMap, throwError } from 'rxjs';
 import { routes } from './app.routes';
 import { provideToastr } from 'ngx-toastr';
+import { BearerInterceptor } from './inteceptor/bearer-interceptor-interceptor';
 
 
 const bearerInteceptor = (rq: HttpRequest<unknown>, next: HttpHandlerFn): Observable<HttpEvent<unknown>> => {
   const tokenService = inject(AuthService);
-  if (tokenService.userState()?.token) {
-    const headers = rq.headers.append('Authorization', `Bearer ${tokenService.userState().token}`);
-    return next(rq.clone({
-      headers,
-      withCredentials: true
-    }));
-  } else return next(rq.clone({
+  const token = tokenService.userState()?.token || sessionStorage.getItem(tokenService.SESSION_ACCESS_TOKEN);
+  const headers = token ? rq.headers.append('Authorization', `Bearer ${token}`) : rq.headers;
+  const clonedReq = rq.clone({
+    headers,
     withCredentials: true
-  }));
+  });
 
+  return next(clonedReq).pipe(
+    catchError((error) => {
+      if (error.status === 401) {
+        return tokenService.refreshTokensWhenTheyExpire().pipe(
+          switchMap((success) => {
+            if (success) {
+              const newToken = tokenService.userState().token;
+              const retryReq = rq.clone({
+                headers: rq.headers.append('Authorization', `Bearer ${newToken}`),
+                withCredentials: true
+              });
+              return next(retryReq);
+            } else {
+              return throwError(() => error);
+            }
+          })
+        );
+      }
+      return throwError(() => error);
+    })
+  );
 };
 
 export const appConfig: ApplicationConfig = {

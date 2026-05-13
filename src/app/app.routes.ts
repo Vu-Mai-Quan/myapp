@@ -23,6 +23,9 @@ const routes: RouterAlias[] = [
         canActivate:[userGuard]
       }
     ]
+  },
+  {path:'**',
+    redirectTo:'/home/login'
   }
 ];
 export { RouterAlias, routes };

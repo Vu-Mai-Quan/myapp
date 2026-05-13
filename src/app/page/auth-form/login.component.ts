@@ -123,7 +123,7 @@ export class AuthFormComponent {
   submitLogin(event: Event) {
     event.preventDefault()
     if (this.login.valid) {
-      debugger
+      // debugger
       this.AUTH.login(this.login.value as Login)
     } else {
       console.log('Form is invalid');
