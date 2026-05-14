@@ -43,3 +43,4 @@ Thumbs.db
 /nbproject/private/
 
 *.env
+src/app/services/auth/auth.service.ts
