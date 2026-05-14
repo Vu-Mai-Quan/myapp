@@ -57,7 +57,6 @@ export class AuthService implements OnInit {
         this._router.navigate(["home", "main-chat"]);
       },
       error: ({ error: { title } }) => {
-        console.error(title);
         this.stopLoading();
         this._router.navigate(["home", "login"]);
         this.toastSv.error(title, "Error");
