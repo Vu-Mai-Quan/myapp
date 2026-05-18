@@ -1,25 +1,32 @@
-import { HttpEvent, HttpHandlerFn, HttpRequest, provideHttpClient, withFetch, withInterceptors, withInterceptorsFromDi } from '@angular/common/http';
-import { ApplicationConfig, inject } from '@angular/core';
+import { HttpEvent, HttpHandlerFn, HttpRequest, provideHttpClient, withFetch, withInterceptors } from '@angular/common/http';
+import { ApplicationConfig, PLATFORM_ID, inject } from '@angular/core';
 import { provideClientHydration } from '@angular/platform-browser';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { provideRouter } from '@angular/router';
 import { AuthService } from 'app/services/auth/auth.service';
+import { provideToastr } from 'ngx-toastr';
 import { Observable, catchError, switchMap, throwError } from 'rxjs';
 import { routes } from './app.routes';
-import { provideToastr } from 'ngx-toastr';
-import { BearerInterceptor } from './inteceptor/bearer-interceptor-interceptor';
-
+import { ENVIROMENT } from 'angular.dev';
+const ignoreUrls = [`${ENVIROMENT.baseUrl}auth/refresh`, `${ENVIROMENT.baseUrl}auth/sign-in`, `${ENVIROMENT.baseUrl}auth/register`];
 
 const bearerInteceptor = (rq: HttpRequest<unknown>, next: HttpHandlerFn): Observable<HttpEvent<unknown>> => {
-  const tokenService = inject(AuthService);
-  const token = tokenService.userState()?.token || sessionStorage.getItem(tokenService.SESSION_ACCESS_TOKEN);
+  const tokenService = inject(AuthService), id = inject(PLATFORM_ID);
+  let token: string | null | undefined = tokenService.userState()?.token;
+  if(id === 'browser' && !token) {
+   token= sessionStorage?.getItem(tokenService.SESSION_ACCESS_TOKEN);
+  }
   const headers = token ? rq.headers.append('Authorization', `Bearer ${token}`) : rq.headers;
   const clonedReq = rq.clone({
     headers,
     withCredentials: true
   });
-
+  if(ignoreUrls.some(url => rq.url.includes(url))) {
+    return next(rq.clone({
+      withCredentials: true
+    }));
+  }
   return next(clonedReq).pipe(
     catchError((error) => {
       if (error.status === 401) {

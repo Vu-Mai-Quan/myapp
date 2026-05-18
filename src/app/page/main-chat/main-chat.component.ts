@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '@service/auth/auth.service';
@@ -16,6 +17,8 @@ private readonly AUTH= inject(AuthService)
 
 private readonly ROUTER = inject(Router)
 
+private readonly http = inject(HttpClient)
+
 signOut(){
   this.AUTH.logout().subscribe({
     next:()=>{
@@ -27,4 +30,12 @@ signOut(){
   });
 }
 
+ngOnInit(): void {
+  this.http.get('http://localhost:8080/api/auth/refresh-token').pipe(
+    finalize(() => console.log('Request completed'))
+  ).subscribe({
+    next: (res) => console.log(res),
+    error: (e) => console.log(e.error)
+  });
+}
 }
