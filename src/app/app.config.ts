@@ -22,7 +22,7 @@ const bearerInteceptor = (rq: HttpRequest<unknown>, next: HttpHandlerFn): Observ
     headers,
     withCredentials: true
   });
-  if(ignoreUrls.some(url => rq.url.includes(url))) {
+  if(ignoreUrls.some(url => rq.url.startsWith(url))) {
     return next(rq.clone({
       withCredentials: true
     }));

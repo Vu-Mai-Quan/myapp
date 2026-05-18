@@ -84,8 +84,7 @@ export class AuthService implements OnInit {
       .pipe(
         retry({
           count: 2,
-          delay(error, retryCount) {
-            console.log(retryCount);
+          delay(error,) {
             if (error.status === 401) return timer(300);
             return throwError(() => error);
           },

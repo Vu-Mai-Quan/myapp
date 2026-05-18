@@ -31,11 +31,7 @@ signOut(){
 }
 
 ngOnInit(): void {
-  this.http.get('http://localhost:8080/api/auth/refresh-token').pipe(
-    finalize(() => console.log('Request completed'))
-  ).subscribe({
-    next: (res) => console.log(res),
-    error: (e) => console.log(e.error)
-  });
+  console.log('init');
+  
 }
 }

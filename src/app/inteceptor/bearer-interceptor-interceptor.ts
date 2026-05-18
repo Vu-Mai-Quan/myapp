@@ -24,7 +24,7 @@ export class BearerInterceptor implements HttpInterceptor {
                 const newToken = this.authService.userState().token;
                 const retryReq = req.clone({
                   setHeaders: {
-                    Authorization: `Bearer ${newToken}`
+                    Authorization: `Bearer ${newToken}`,
                   }
                 });
                 return next.handle(retryReq);
